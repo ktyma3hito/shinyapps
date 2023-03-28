@@ -1,0 +1,64 @@
+---
+title: 'Course Project: Shiny Application and Reproducible Pitch'
+author: "Masa Katayama"
+date: '2023-03-28'
+output: slidy_presentation
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+## Coursera Peer Graded Assignment Reproducible Pitch
+- You can find the details of the assignment from the web address:
+- URL: https://www.coursera.org/learn/data-products/peer/tMYrn/course-project-shiny-application-and-reproducible-pitch
+
+- In this assignment, I prepared a shiny application and the link is :
+- URL: https://ktyma3hito.shinyapps.io/carmodel/
+
+- Also, the codes of server.R and ui.R are on the link:
+- URL: https://github.com/ktyma3hito/shinyapps/tree/main/apps
+
+
+## Data Used for Shiny Application
+
+- The data used for Shiny Application is mtcars data set.
+```{r}
+library(datasets)
+head(mtcars, 5)
+```
+
+## code for ui.R
+
+```{r ui, echo = TRUE, warning=FALSE}
+library(shiny)
+
+shinyUI(
+  fluidPage(
+    titlePanel("mtcars Dataset"),
+    sidebarLayout(
+      sidebarPanel(
+        selectInput("car", "Car Model:", choices = rownames(mtcars))
+      ),
+      mainPanel(
+        tableOutput("car_info")
+      )
+    )
+  )
+)
+
+```
+
+## Code for server.R
+
+```{r server, echo=TRUE}
+library(shiny)
+
+shinyServer(function(input, output) {
+  output$car_info <- renderTable({
+    selected_car <- input$car
+    mtcars[rownames(mtcars) == selected_car, ]
+  })
+})
+```
+
